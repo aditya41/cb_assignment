@@ -14,7 +14,12 @@ $(() => {
     // if (!document.cookie || document.cookie == "")
     //     window.location.replace('/login.html')
 
-
+    if (localStorage.getItem('token')) {
+        $('#login').css('hidden', 'true').hide()
+        $('#head').hide()
+    } else {
+        $('#logout').hide()
+    }
 
     $.get({
             url: `http://localhost:4444/getJobs`,
@@ -28,8 +33,8 @@ $(() => {
             let final = '';
             // console.log(data.length)
             data.forEach(({ companyName, jobId, jobTitle, description, ctc }) => {
-                final += `<div class="col-4">
-            <div class="job-card">
+                final += `<div class="cardBottom col-4">
+            <div class="job-card" >
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         

@@ -19,6 +19,10 @@ $(() => {
                     // console.log(document.cookie)
                 console.log(data);
                 window.location.replace('/index.html')
+            },
+            error: function(e) {
+                if (e.status == 400)
+                    alert('wrong credentials')
             }
         });
 

@@ -5,7 +5,7 @@ const auth = require('../middleware/auth')
 
 router.post('/signup', async(req, res) => {
     console.log('hi')
-    console.log(req.body)
+        // console.log(req.body)
     try {
         const user = new User(req.body)
         const token = await user.generateJwtToken()
@@ -38,7 +38,7 @@ router.post('/logout', auth, async(req, res) => {
 
         const user = await User.findOne({ _id: req.user._id })
         user.token = ""
-        console.log(user)
+            // console.log(user)
             // console.log(user)
         await user.save()
         res.status(200).send('loggedout')

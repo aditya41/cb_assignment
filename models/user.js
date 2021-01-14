@@ -45,8 +45,6 @@ const UserSchema = new mongoose.Schema({
     }],
     token: {
         type: String
-            // maxlength: 200,
-            // required: true
     },
     resume: {
         type: String

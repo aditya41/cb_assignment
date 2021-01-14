@@ -6,7 +6,7 @@ const Job = require('../models/jobs')
 const auth = require('../middleware/auth')
 const { findById } = require('../models/user')
 
-
+// adding jobs
 router.post('/addjobs', async(req, res) => {
         const job = new Job(req.body)
 
@@ -20,16 +20,16 @@ router.post('/addjobs', async(req, res) => {
     })
     // for over view
 router.get('/getjobs', auth, async(req, res) => {
-        try {
+    try {
 
-            const jobs = await Job.find({});
-            // console.log(jobs)
-            res.send(jobs)
-        } catch (err) {
-            res.status(400).send(err)
-        }
-    })
-    //not working
+        const jobs = await Job.find({});
+
+        res.send(jobs)
+    } catch (err) {
+        res.status(400).send(err)
+    }
+})
+
 router.post('/apply', auth, async(req, res) => {
         try {
             console.log(req.user)
@@ -64,7 +64,7 @@ router.post('/apply', auth, async(req, res) => {
             res.status(200).send({ user: req.user, job })
         } catch (err) {
             // console.log('ghj')
-            console.log(err)
+            // console.log(err)
             res.status(400).send({ err })
         }
     })

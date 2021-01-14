@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.0.0/mdb.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="view.css">
+    <script src="jquery.js"></script>
+    <script src="logout.js"></script>
+
+</head>
+
+<body class="bg-dark">
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid Home">
+            <a class="navbar-brand" href="index.html">
+                <i class="fa fa-home"></i> Home
+            </a>
+            <ul class="nav justify-content-end login">
+                <li class="nav-item">
+                    <!-- <a href="Login.html"></a> -->
+                    <button type="button" class="btn btn-info" id="logout">Logout</button>
+                    <!-- <a href="Signup.html"> <button type="button" class="btn btn-info">Signup</button></a> -->
+                </li>
+        </div>
+    </nav>
+    <script>
+        $(() => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const myParam = urlParams.get('id');
+            console.log(myParam)
+            $.get(`/particularJob?id=${myParam}`, (data) => {
+                console.log(data)
+                var jobId = data.jobId;
+                var jobTitle = data.jobTitle;
+                var companyName = data.companyName;
+                var description = data.description;
+                var ctc = data.ctc;
+                let final = `
+
+<!-- Card -->
+    <div class="container cardB">
+      <div class="card text-center">
+        <div class="card-header"><h1>${companyName}</h1></div>
+        <div class="card-body">
+          <h5 class="card-title"><h2>${jobTitle}</h2></h5>
+          <p class="card-text">
+            ${description}
+          </p>
+          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Apply</button>
+        </div>
+        <div class="card-footer text-muted"><h4>${ctc}</h4></div>
+      </div>
+    </div>
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Apply Now</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <form>
+        <div class="modal-body">
+          <input type="url" id="resume" class="urlI" >
+          <button id="apply" class="btn btn-info">Submit</button>
+        </div>
+    </form>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>`
+                document.getElementById("d").innerHTML = final
+                $('#apply').click(function(e) {
+                    e.preventDefault();
+                    let resume = $('#resume').val()
+                    $.ajax({
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        type: 'POST',
+                        url: '/apply',
+                        data: JSON.stringify({
+                            jobId,
+                            resume
+                        }),
+                        beforeSend: function(req) {
+                            req.setRequestHeader('authorization', `${localStorage.getItem('token')}`);
+                        },
+                        success: function(d) {
+                            console.log(d)
+                            window.location.replace('/index.html')
+                        },
+                        error: function(e) {
+                            if (e.status == 402) {
+                                console.log('Already applied')
+                                alert('already applied')
+                            } else {
+                                console.log(e)
+                            }
+                        }
+                    })
+                })
+            })
+        })
+    </script>
+    <div id="d">
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+</body>
+
+</html>
